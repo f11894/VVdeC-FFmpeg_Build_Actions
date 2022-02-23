@@ -29,7 +29,10 @@ jobs:
         copy /y C:\msys64\home\%username%\ffmpeg\ffmpeg.exe ffmpeg.exe
         copy /y C:\msys64\home\%username%\ffmpeg\ffprobe.exe ffprobe.exe
         copy /y C:\msys64\home\%username%\ffmpeg\ffplay.exe ffplay.exe
-        7a a FFmpeg-VVCdecode.7z ffmpeg.exe ffprobe.exe ffplay.exe
+        copy /y C:\msys64\home\%username%\vvdec\LICENSE.txt VVdeC_license.txt
+        copy /y C:\msys64\home\%username%\dav1d\COPYING dav1d_COPYING.txt
+        copy /y C:\msys64\home\%username%\ffmpeg\COPYING.GPLv3 ffmpeg_COPYING.txt
+        7a a FFmpeg-VVCdecode.7z ffmpeg.exe ffprobe.exe ffplay.exe VVdeC_license.txt dav1d_COPYING.txt ffmpeg_COPYING.txt
     - name: Upload result
       uses: actions/upload-artifact@v2
       with:
