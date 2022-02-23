@@ -13,7 +13,7 @@ jobs:
     - name: Install dependencies
       shell: cmd
       run: |
-        C:\msys64\usr\bin\bash -lc "pacman -S --needed mingw-w64-x86_64-cmake mingw-w64-x86_64-gcc mingw-w64-x86_64-nasm mingw-w64-x86_64-yasm mingw-w64-x86_64-ninja mingw-w64-x86_64-pkg-config mingw-w64-x86_64-meson git base-devel autotools --noconfirm"
+        C:\msys64\usr\bin\bash -lc "pacman -S --needed mingw-w64-x86_64-cmake mingw-w64-x86_64-gcc mingw-w64-x86_64-nasm mingw-w64-x86_64-yasm mingw-w64-x86_64-ninja mingw-w64-x86_64-pkg-config mingw-w64-x86_64-meson mingw-w64-x86_64-SDL2 git base-devel autotools --noconfirm"
     - name: build
       shell: cmd
       run: |
@@ -25,7 +25,7 @@ jobs:
         C:\msys64\usr\bin\bash -lc "git clone -b 0.9.2 https://code.videolan.org/videolan/dav1d && cd dav1d && mkdir dav1d_build && cd dav1d_build && meson .. --buildtype release --default-library static --prefix=/mingw64/ && ninja && ninja install"
         C:\msys64\usr\bin\bash -lc "git clone https://github.com/fraunhoferhhi/vvdec && cd vvdec && mkdir gcc_cmake && cd gcc_cmake && cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/mingw64/ && ninja && ninja install"
         C:\msys64\usr\bin\bash -lc "git clone https://github.com/tbiat/FFmpeg"
-        C:\msys64\usr\bin\bash -lc "cd ffmpeg && ./configure --disable-debug --enable-version3 --enable-gpl --enable-libdav1d --enable-libvvdec --enable-static --pkg-config-flags=--static && make -j 2"
+        C:\msys64\usr\bin\bash -lc "cd ffmpeg && ./configure --disable-debug --enable-version3 --enable-gpl --enable-ffplay --enable-libdav1d --enable-libvvdec --enable-static --pkg-config-flags=--static && make -j 2"
         copy /y C:\msys64\home\%username%\ffmpeg\ffmpeg.exe ffmpeg.exe
         copy /y C:\msys64\home\%username%\ffmpeg\ffprobe.exe ffprobe.exe
         copy /y C:\msys64\home\%username%\ffmpeg\ffplay.exe ffplay.exe
