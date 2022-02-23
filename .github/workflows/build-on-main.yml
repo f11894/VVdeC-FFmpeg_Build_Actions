@@ -22,7 +22,7 @@ jobs:
         rem set CFLAGS=-flto
         rem set CXXFLAGS=%CFLAGS%
         set LDFLAGS=-static -static-libgcc -static-libstdc++ -s
-        C:\msys64\usr\bin\bash -lc "git clone https://code.videolan.org/videolan/dav1d && cd dav1d && mkdir dav1d_build && cd dav1d_build && meson .. --buildtype release --default-library static --prefix=/mingw64/ && ninja && ninja install"
+        C:\msys64\usr\bin\bash -lc "git clone -b 0.9.2 https://code.videolan.org/videolan/dav1d && cd dav1d && mkdir dav1d_build && cd dav1d_build && meson .. --buildtype release --default-library static --prefix=/mingw64/ && ninja && ninja install"
         C:\msys64\usr\bin\bash -lc "git clone https://github.com/fraunhoferhhi/vvdec && cd vvdec && mkdir gcc_cmake && cd gcc_cmake && cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/mingw64/ && ninja && ninja install"
         C:\msys64\usr\bin\bash -lc "git clone https://github.com/tbiat/FFmpeg"
         C:\msys64\usr\bin\bash -lc "cd ffmpeg && ./configure --disable-debug --enable-version3 --enable-gpl --enable-libdav1d --enable-libvvdec --enable-static --pkg-config-flags=--static && make -j 2"
@@ -32,7 +32,7 @@ jobs:
         copy /y C:\msys64\home\%username%\vvdec\LICENSE.txt VVdeC_license.txt
         copy /y C:\msys64\home\%username%\dav1d\COPYING dav1d_COPYING.txt
         copy /y C:\msys64\home\%username%\ffmpeg\COPYING.GPLv3 ffmpeg_COPYING.txt
-        7a a FFmpeg-VVCdecode.7z ffmpeg.exe ffprobe.exe ffplay.exe VVdeC_license.txt dav1d_COPYING.txt ffmpeg_COPYING.txt
+        7z a FFmpeg-VVCdecode.7z ffmpeg.exe ffprobe.exe ffplay.exe VVdeC_license.txt dav1d_COPYING.txt ffmpeg_COPYING.txt
     - name: Upload result
       uses: actions/upload-artifact@v2
       with:
