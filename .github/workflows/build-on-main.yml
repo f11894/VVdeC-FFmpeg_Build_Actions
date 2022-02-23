@@ -23,6 +23,7 @@ jobs:
         rem set CXXFLAGS=%CFLAGS%
         set LDFLAGS=-static -static-libgcc -static-libstdc++ -s
         C:\msys64\usr\bin\bash -lc "git clone https://code.videolan.org/videolan/dav1d && cd dav1d && mkdir dav1d_build && cd dav1d_build && meson .. --buildtype release --default-library static --prefix=/mingw64/ && ninja && ninja install"
+        C:\msys64\usr\bin\bash -lc "git clone https://github.com/fraunhoferhhi/vvdec && cd vvdec && mkdir gcc_cmake && cd gcc_cmake && cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/mingw64/ && ninja && ninja install"
         C:\msys64\usr\bin\bash -lc "git clone https://github.com/tbiat/FFmpeg"
         C:\msys64\usr\bin\bash -lc "cd ffmpeg && ./configure --disable-debug --enable-version3 --enable-gpl --enable-libdav1d --enable-libvvdec --enable-static --pkg-config-flags=--static && make -j 2"
         copy /y C:\msys64\home\%username%\ffmpeg\ffmpeg.exe ffmpeg.exe
