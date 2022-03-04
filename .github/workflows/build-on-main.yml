@@ -1,6 +1,11 @@
 name: Build on main
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - main
+  schedule:
+      - cron: '0 0 * * 2'
 
 jobs:
   build:
