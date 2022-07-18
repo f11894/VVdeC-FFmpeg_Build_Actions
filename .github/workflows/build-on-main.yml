@@ -15,28 +15,58 @@ jobs:
       uses: actions/checkout@v2
       with:
         fetch-depth: 0
-    - name: Install dependencies
+    - uses: msys2/setup-msys2@v2
+      with:
+        location: D:\msys2_github\
+        update: true
+        install: >-
+            mingw-w64-x86_64-cmake
+            mingw-w64-x86_64-gcc
+            mingw-w64-x86_64-nasm
+            mingw-w64-x86_64-yasm
+            mingw-w64-x86_64-ninja
+            mingw-w64-x86_64-pkg-config
+            mingw-w64-x86_64-meson
+            git
+            base-devel
+            autotools
+        msystem: MINGW64
+        path-type: strict
+    - name: build_dav1d
+      shell: msys2 {0}
+      run: |
+        git clone -b 0.9.2 https://code.videolan.org/videolan/dav1d
+        cd dav1d && mkdir dav1d_build
+        cd dav1d_build && meson .. --buildtype release --default-library static --prefix=/mingw64/
+        ninja
+        ninja install
+    - name: build_vvdec
+      shell: msys2 {0}
+      run: |
+        git clone https://github.com/fraunhoferhhi/vvdec
+        cd vvdec
+        mkdir gcc_cmake
+        cd gcc_cmake
+        cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/mingw64/
+        ninja
+        ninja install
+    - name: build_ffmpeg
+      shell: msys2 {0}
+      run: |
+        export LDFLAGS="-static -static-libgcc -static-libstdc++ -s"
+        git clone https://github.com/lehmann-c/FFmpeg
+        cd ffmpeg
+        ./configure --disable-debug --enable-version3 --enable-gpl --enable-ffplay --enable-libdav1d --enable-libvvdec --pkg-config-flags=--static --enable-static
+        make -j 2
+    - name: postprocessing
       shell: cmd
       run: |
-        C:\msys64\usr\bin\bash -lc "pacman -S --needed mingw-w64-x86_64-cmake mingw-w64-x86_64-gcc mingw-w64-x86_64-nasm mingw-w64-x86_64-yasm mingw-w64-x86_64-ninja mingw-w64-x86_64-pkg-config mingw-w64-x86_64-meson mingw-w64-x86_64-SDL2 git base-devel autotools --noconfirm"
-    - name: build
-      shell: cmd
-      run: |
-        set MSYSTEM=MINGW64
-        rem set HOME=${{ github.workspace }}
-        rem set CFLAGS=-flto
-        rem set CXXFLAGS=%CFLAGS%
-        set LDFLAGS=-static -static-libgcc -static-libstdc++ -s
-        C:\msys64\usr\bin\bash -lc "git clone -b 0.9.2 https://code.videolan.org/videolan/dav1d && cd dav1d && mkdir dav1d_build && cd dav1d_build && meson .. --buildtype release --default-library static --prefix=/mingw64/ && ninja && ninja install"
-        C:\msys64\usr\bin\bash -lc "git clone https://github.com/fraunhoferhhi/vvdec && cd vvdec && mkdir gcc_cmake && cd gcc_cmake && cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/mingw64/ && ninja && ninja install"
-        C:\msys64\usr\bin\bash -lc "git clone https://github.com/lehmann-c/FFmpeg"
-        C:\msys64\usr\bin\bash -lc "cd ffmpeg && ./configure --disable-debug --enable-version3 --enable-gpl --enable-ffplay --enable-libdav1d --enable-libvvdec --pkg-config-flags=--static --enable-static && make -j 2"
-        copy /y C:\msys64\home\%username%\ffmpeg\ffmpeg.exe ffmpeg.exe
-        copy /y C:\msys64\home\%username%\ffmpeg\ffprobe.exe ffprobe.exe
-        copy /y C:\msys64\home\%username%\ffmpeg\ffplay.exe ffplay.exe
-        copy /y C:\msys64\home\%username%\vvdec\LICENSE.txt VVdeC_license.txt
-        copy /y C:\msys64\home\%username%\dav1d\COPYING dav1d_COPYING.txt
-        copy /y C:\msys64\home\%username%\ffmpeg\COPYING.GPLv3 ffmpeg_COPYING.txt
+        copy /y ffmpeg\ffmpeg.exe ffmpeg.exe
+        copy /y ffmpeg\ffprobe.exe ffprobe.exe
+        copy /y ffmpeg\ffplay.exe ffplay.exe
+        copy /y vvdec\LICENSE.txt VVdeC_license.txt
+        copy /y dav1d\COPYING dav1d_COPYING.txt
+        copy /y ffmpeg\COPYING.GPLv3 ffmpeg_COPYING.txt
         7z a FFmpeg-VVCdecode.7z ffmpeg.exe ffprobe.exe ffplay.exe VVdeC_license.txt dav1d_COPYING.txt ffmpeg_COPYING.txt
     - name: Upload result
       uses: actions/upload-artifact@v2
