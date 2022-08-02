@@ -1,4 +1,4 @@
-うname: Build on main
+name: Build on main
 
 on:
   push:
