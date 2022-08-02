@@ -51,6 +51,8 @@ jobs:
         cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/mingw64/
         ninja
         ninja install
+        cat 
+        echo Libs.private: -lstdc++>>D:/msys2_github/msys64/mingw64/lib/pkgconfig/libvvdec.pc
     - name: build_ffmpeg
       shell: msys2 {0}
       run: |
