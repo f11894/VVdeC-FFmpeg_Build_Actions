@@ -44,16 +44,14 @@ jobs:
     - name: build_vvdec
       shell: msys2 {0}
       run: |
+        export LDFLAGS="-static -static-libgcc -static-libstdc++ -s"
         git clone https://github.com/fraunhoferhhi/vvdec
         cd vvdec
-        git checkout 923d37fbce36ab0300ff65fce780a15a20b94084
         mkdir gcc_cmake
         cd gcc_cmake
         cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/mingw64/
         ninja
         ninja install
-        cat D:/msys2_github/msys64/mingw64/lib/pkgconfig/libvvdec.pc
-        echo Libs.private: -lstdc++>>D:/msys2_github/msys64/mingw64/lib/pkgconfig/libvvdec.pc
     - name: build_ffmpeg
       shell: msys2 {0}
       run: |
