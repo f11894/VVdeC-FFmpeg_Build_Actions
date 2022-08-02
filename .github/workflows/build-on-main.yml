@@ -44,7 +44,6 @@ jobs:
     - name: build_vvdec
       shell: msys2 {0}
       run: |
-        export LDFLAGS="-static -static-libgcc -static-libstdc++ -s"
         git clone https://github.com/fraunhoferhhi/vvdec
         cd vvdec
         mkdir gcc_cmake
