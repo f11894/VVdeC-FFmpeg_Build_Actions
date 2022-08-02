@@ -1,4 +1,4 @@
-name: Build on main
+うname: Build on main
 
 on:
   push:
@@ -46,6 +46,7 @@ jobs:
       run: |
         git clone https://github.com/fraunhoferhhi/vvdec
         cd vvdec
+        git checkout 923d37fbce36ab0300ff65fce780a15a20b94084
         mkdir gcc_cmake
         cd gcc_cmake
         cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/mingw64/
