@@ -43,6 +43,7 @@ jobs:
         cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/mingw64/
         ninja
         ninja install
+        sed -i 's/-lvvdec/-lvvdec -lapputils/' '/mingw64/lib/pkgconfig/libvvdec.pc'
     - name: build_dav1d
       shell: msys2 {0}
       run: |
