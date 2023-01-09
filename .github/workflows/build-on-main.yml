@@ -12,7 +12,7 @@ jobs:
     runs-on: windows-latest
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         fetch-depth: 0
     - uses: msys2/setup-msys2@v2
@@ -70,7 +70,7 @@ jobs:
         copy /y ffmpeg\COPYING.GPLv3 ffmpeg_COPYING.txt
         7z a FFmpeg-VVCdecode.7z ffmpeg.exe ffprobe.exe ffplay.exe VVdeC_license.txt dav1d_COPYING.txt ffmpeg_COPYING.txt
     - name: Upload result
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: FFmpeg-VVCdecode
         path: |
@@ -82,9 +82,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
     
-    - uses: actions/download-artifact@v2
+    - uses: actions/download-artifact@v3
       with:
         name: FFmpeg-VVCdecode
         path: artifacts
