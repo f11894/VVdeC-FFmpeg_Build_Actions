@@ -29,6 +29,7 @@ jobs:
             mingw-w64-x86_64-meson
             mingw-w64-x86_64-SDL2
             git
+            wget
             base-devel
             autotools
         msystem: MINGW64
@@ -54,9 +55,12 @@ jobs:
     - name: build_ffmpeg
       shell: msys2 {0}
       run: |
+        wget -O Add-support-for-H266-VVC.patch https://patchwork.ffmpeg.org/series/8365/mbox/
         export LDFLAGS="-static -static-libgcc -static-libstdc++ -s"
-        git clone https://github.com/tbiat/FFmpeg
+        git clone https://git.ffmpeg.org/ffmpeg.git ffmpeg
         cd ffmpeg
+        git apply --check ../Add-support-for-H266-VVC.patch
+        git apply ../Add-support-for-H266-VVC.patch
         ./configure --disable-debug --enable-version3 --enable-gpl --enable-ffplay --enable-libdav1d --enable-libvvdec --pkg-config-flags=--static --enable-static
         make -j 2
     - name: postprocessing
