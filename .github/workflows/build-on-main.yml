@@ -55,7 +55,7 @@ jobs:
     - name: build_ffmpeg
       shell: msys2 {0}
       run: |
-        wget -O Add-support-for-H266-VVC.patch https://patchwork.ffmpeg.org/series/8365/mbox/
+        wget -O Add-support-for-H266-VVC.patch https://patchwork.ffmpeg.org/series/8577/mbox/
         export LDFLAGS="-static -static-libgcc -static-libstdc++ -s"
         git clone https://git.ffmpeg.org/ffmpeg.git ffmpeg
         cd ffmpeg
