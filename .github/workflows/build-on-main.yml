@@ -72,13 +72,13 @@ jobs:
         copy /y vvdec\LICENSE.txt VVdeC_license.txt
         copy /y dav1d\COPYING dav1d_COPYING.txt
         copy /y ffmpeg\COPYING.GPLv3 ffmpeg_COPYING.txt
-        7z a FFmpeg-VVCdecode.7z ffmpeg.exe ffprobe.exe ffplay.exe VVdeC_license.txt dav1d_COPYING.txt ffmpeg_COPYING.txt
+        7z a VVdeC-FFmpeg.7z ffmpeg.exe ffprobe.exe ffplay.exe VVdeC_license.txt dav1d_COPYING.txt ffmpeg_COPYING.txt
     - name: Upload result
       uses: actions/upload-artifact@v3
       with:
-        name: FFmpeg-VVCdecode
+        name: VVdeC-FFmpeg
         path: |
-          FFmpeg-VVCdecode.7z
+          VVdeC-FFmpeg.7z
 
   create_release:
     name: Create release
@@ -90,7 +90,7 @@ jobs:
     
     - uses: actions/download-artifact@v3
       with:
-        name: FFmpeg-VVCdecode
+        name: VVdeC-FFmpeg
         path: artifacts
     
     - name: Get Date
